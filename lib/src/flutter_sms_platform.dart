@@ -37,29 +37,25 @@ class FlutterSmsPlatform extends PlatformInterface {
   Future<String> sendSMS({
     required String message,
     required List<String> recipients,
+    String? attachmentFilePath,
     bool sendDirect = false,
   }) {
     final mapData = <dynamic, dynamic>{};
     mapData['message'] = message;
     if (!kIsWeb && Platform.isIOS) {
       mapData['recipients'] = recipients;
-      return _channel
-          .invokeMethod<String>('sendSMS', mapData)
-          .then((value) => value ?? 'Error sending sms');
+      mapData['attachmentFilePath'] = attachmentFilePath;
+      return _channel.invokeMethod<String>('sendSMS', mapData).then((value) => value ?? 'Error sending sms');
     } else {
       String _phones = recipients.join(';');
       mapData['recipients'] = _phones;
       mapData['sendDirect'] = sendDirect;
-      return _channel
-          .invokeMethod<String>('sendSMS', mapData)
-          .then((value) => value ?? 'Error sending sms');
+      return _channel.invokeMethod<String>('sendSMS', mapData).then((value) => value ?? 'Error sending sms');
     }
   }
 
   Future<bool> canSendSMS() {
-    return _channel
-        .invokeMethod<bool>('canSendSMS')
-        .then((value) => value ?? false);
+    return _channel.invokeMethod<bool>('canSendSMS').then((value) => value ?? false);
   }
 
   Future<bool> launchSmsMulti(List<String> numbers, [String? body]) {

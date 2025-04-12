@@ -29,6 +29,10 @@ public class SwiftFlutterSmsPlugin: NSObject, FlutterPlugin, UINavigationControl
           let controller = MFMessageComposeViewController()
           controller.body = _arguments["message"] as? String
           controller.recipients = _arguments["recipients"] as? [String]
+          if let attachmentFilePath = _arguments["attachmentFilePath"] as? String, !attachmentFilePath.isEmpty {
+              let url = URL(fileURLWithPath: attachmentFilePath)
+              controller.addAttachmentURL(url, withAlternateFilename: "photo.jpg")
+          }
           controller.messageComposeDelegate = self
           UIApplication.shared.keyWindow?.rootViewController?.present(controller, animated: true, completion: nil)
         } else {

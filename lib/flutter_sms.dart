@@ -6,12 +6,14 @@ import 'src/flutter_sms_platform.dart';
 Future<String> sendSMS({
   required String message,
   required List<String> recipients,
+  String? attachmentFilePath,
   bool sendDirect = false,
 }) =>
     FlutterSmsPlatform.instance.sendSMS(
       message: message,
       recipients: recipients,
       sendDirect: sendDirect,
+      attachmentFilePath: attachmentFilePath,
     );
 
 /// Launch SMS Url Scheme on all platforms
